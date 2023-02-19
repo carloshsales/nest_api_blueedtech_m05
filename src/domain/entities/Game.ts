@@ -1,7 +1,7 @@
 import { Gender } from "./Gender";
 
 export type Game = {
-	id: number;
+	id?: string;
 	title: string;
 	coverImageUrl: string;
 	description: string;

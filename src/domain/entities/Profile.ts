@@ -1,7 +1,7 @@
 import { Game } from "./Game";
 
 export type Profile = {
-	id: number;
+	id?: string;
 	title: string;
 	imageUrl: string;
 	games: Game[];

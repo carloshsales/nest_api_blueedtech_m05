@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String    @id @unique @default(uuid())
+	name String 
+	email String @unique
+	password String
+	cpf String @unique
+	isAdmin Boolean
+	profiles Profile[]
+  createdAt DateTime  @default(now()) @map(name: "created_at")
+  updatedAt DateTime  @default(now()) @map(name: "updated_at")
+}
+
+model Profile {
+  id String    @id @unique @default(uuid())
+  title String
+  imageUrl String
+  user User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String?
+  channelId String?
+
+  createdAt DateTime  @default(now()) @map(name: "created_at")
+  updatedAt DateTime  @default(now()) @map(name: "updated_at")
+}
+
+model Game {
+  id String    @id @unique @default(uuid())
+  title String
+  coverImageUrl String
+  description String
+  year DateTime @default(now())
+  imdbScore Float
+  trailerYouTubeUrl String
+  gameplayYouTubeUrl String
+  genders Gender? @relation(fields: [genderId], references: [id], onDelete: Cascade)
+  genderId String?
+
+  createdAt DateTime  @default(now()) @map(name: "created_at")
+  updatedAt DateTime  @default(now()) @map(name: "updated_at")
+
+  @@map("gender")
+}
+
+model Gender {
+  id String    @id @unique @default(uuid())
+	name String
+  games Game[]
+
+  createdAt DateTime  @default(now()) @map(name: "created_at")
+  updatedAt DateTime  @default(now()) @map(name: "updated_at")
+
+  @@map("game")
+}
